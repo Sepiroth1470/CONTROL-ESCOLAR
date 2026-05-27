@@ -1,0 +1,43 @@
+# Laravel - archivos de entorno
+.env
+.env.backup
+.env.production
+
+# Dependencias de PHP
+/vendor
+
+# Dependencias de Node
+/node_modules
+
+# Archivos compilados y temporales del frontend
+/public/build
+/public/hot
+/public/storage
+
+# Archivos generados por Laravel
+/storage/*.key
+/storage/pail
+
+# Logs
+*.log
+
+# Archivos de pruebas
+.phpunit.result.cache
+/.phpunit.cache
+
+# Configuración de editores
+/.idea
+/.vscode
+/.nova
+/.zed
+/.cursor/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos auxiliares
+/auth.json
+_ide_helper.php
+Homestead.json
+Homestead.yaml
