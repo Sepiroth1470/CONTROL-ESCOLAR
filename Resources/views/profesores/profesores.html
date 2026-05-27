@@ -1,151 +1,299 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Profesores</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Horarios - Profesores</title>
+    <style>
+        /* Estilos Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family: Arial, sans-serif;
-    }
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            padding: 2rem;
+        }
 
-    body{
-      background:#f4f6f9;
-      color:#333;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
 
-    header{
-      background:#2c3e50;
-      color:white;
-      padding:25px;
-      text-align:center;
-    }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    header h1{
-      margin-bottom:10px;
-    }
+        /* Tarjetas */
+        .card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+        }
 
-    .contenedor{
-      width:90%;
-      max-width:1200px;
-      margin:40px auto;
-    }
+        h2 {
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+            font-size: 1.25rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
 
-    .grid-profesores{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap:25px;
-    }
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1rem;
+        }
 
-    .card{
-      background:white;
-      border-radius:15px;
-      overflow:hidden;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
-      transition:0.3s;
-    }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+        }
 
-    .card:hover{
-      transform:translateY(-5px);
-    }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+        }
 
-    .card img{
-      width:100%;
-      height:250px;
-      object-fit:cover;
-    }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
 
-    .info{
-      padding:20px;
-    }
+        button {
+            width: 100%;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-    .info h2{
-      color:#2c3e50;
-      margin-bottom:10px;
-    }
+        button:hover {
+            background-color: #1d4ed8;
+        }
 
-    .info p{
-      margin-bottom:8px;
-      line-height:1.5;
-    }
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
 
-    .boton{
-      display:inline-block;
-      margin-top:10px;
-      padding:10px 15px;
-      background:#3498db;
-      color:white;
-      text-decoration:none;
-      border-radius:8px;
-      transition:0.3s;
-    }
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
 
-    .boton:hover{
-      background:#2980b9;
-    }
+        th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-    footer{
-      margin-top:50px;
-      background:#2c3e50;
-      color:white;
-      text-align:center;
-      padding:20px;
-    }
-  </style>
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-delete {
+            background-color: #ef4444;
+            padding: 0.4rem 0.75rem;
+            font-size: 0.85rem;
+            width: auto;
+            display: inline-block;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc2626;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #64748b;
+            padding: 2rem;
+        }
+    </style>
 </head>
-
 <body>
 
-  <header>
-    <h1>Equipo de Profesores</h1>
-    <p>Conoce a nuestros docentes y sus especialidades</p>
-  </header>
+    <h1 style="text-align: center; margin-bottom: 2rem; color: #0f172a;">Control de Horarios Docentes</h1>
 
-  <main class="contenedor">
+    <div class="container">
+        
+        <!-- Formulario de Registro -->
+        <aside class="card">
+            <h2>Asignar Horario</h2>
+            <form id="horarioForm">
+                <div class="form-group">
+                    <label for="profesor_nombre">Nombre del Profesor</label>
+                    <input type="text" id="profesor_nombre" required placeholder="Ej. Dr. Armando Casas">
+                </div>
 
-    <div class="grid-profesores">
+                <div class="form-group">
+                    <label for="materia">Materia / Asignatura</label>
+                    <input type="text" id="materia" required placeholder="Ej. Programación Web">
+                </div>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop" alt="Profesor">
-        <div class="info">
-          <h2>María González</h2>
-          <p><strong>Materia:</strong> Matemáticas</p>
-          <p>Especialista en álgebra y cálculo con más de 10 años de experiencia.</p>
-          <a href="#" class="boton">Ver perfil</a>
-        </div>
-      </div>
+                <div class="form-group">
+                    <label for="dia_semana">Día de la Semana</label>
+                    <select id="dia_semana" required>
+                        <option value="Lunes">Lunes</option>
+                        <option value="Martes">Martes</option>
+                        <option value="Miércoles">Miércoles</option>
+                        <option value="Jueves">Jueves</option>
+                        <option value="Viernes">Viernes</option>
+                        <option value="Sábado">Sábado</option>
+                    </select>
+                </div>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1200&auto=format&fit=crop" alt="Profesor">
-        <div class="info">
-          <h2>Carlos Ramírez</h2>
-          <p><strong>Materia:</strong> Historia</p>
-          <p>Docente apasionado por la historia universal y la investigación académica.</p>
-          <a href="#" class="boton">Ver perfil</a>
-        </div>
-      </div>
+                <div class="form-group">
+                    <label for="hora_inicio">Hora de Inicio</label>
+                    <input type="time" id="hora_inicio" required>
+                </div>
 
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1200&auto=format&fit=crop" alt="Profesora">
-        <div class="info">
-          <h2>Ana Torres</h2>
-          <p><strong>Materia:</strong> Literatura</p>
-          <p>Experta en análisis literario y escritura creativa.</p>
-          <a href="#" class="boton">Ver perfil</a>
-        </div>
-      </div>
+                <div class="form-group">
+                    <label for="hora_fin">Hora de Fin</label>
+                    <input type="time" id="hora_fin" required>
+                </div>
+
+                <button type="submit">Registrar Horario</button>
+            </form>
+        </aside>
+
+        <!-- Tabla de Visualización -->
+        <main class="card" style="overflow-x: auto;">
+            <h2>Horarios Registrados</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Profesor</th>
+                        <th>Materia</th>
+                        <th>Día</th>
+                        <th>Horario</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaHorarios">
+                    <!-- Los datos de la base de datos se cargarán aquí dinámicamente -->
+                </tbody>
+            </table>
+        </main>
 
     </div>
 
-  </main>
+    <script>
+        // URL de tu controlador PHP
+        const API_URL = 'HorarioController.php';
 
-  <footer>
-    <p>© 2026 Escuela Académica | Todos los derechos reservados</p>
-  </footer>
+        // Cargar horarios al abrir la página
+        document.addEventListener('DOMContentLoaded', cargarHorarios);
 
+        // Evento para capturar el envío del formulario (CREATE)
+        document.getElementById('horarioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const datos = {
+                profesor_nombre: document.getElementById('profesor_nombre').value,
+                materia: document.getElementById('materia').value,
+                dia_semana: document.getElementById('dia_semana').value,
+                hora_inicio: document.getElementById('hora_inicio').value,
+                hora_fin: document.getElementById('hora_fin').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(datos)
+                });
+
+                if (response.ok) {
+                    alert('Horario guardado correctamente');
+                    document.getElementById('horarioForm').reset();
+                    cargarHorarios(); // Recargar la tabla
+                } else {
+                    alert('Error al guardar el horario');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        // Función para listar los horarios (READ)
+        async function cargarHorarios() {
+            const tbody = document.getElementById('tablaHorarios');
+            tbody.innerHTML = '<tr><td colspan="5" class="no-data">Cargando horarios...</td></tr>';
+
+            try {
+                const response = await fetch(API_URL);
+                const horarios = await response.json();
+
+                tbody.innerHTML = ''; // Limpiar indicador de carga
+
+                if (horarios.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="no-data">No hay horarios registrados aún.</td></tr>';
+                    return;
+                }
+
+                horarios.forEach(h => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td><strong>${h.profesor_nombre}</strong></td>
+                        <td>${h.materia}</td>
+                        <td>${h.dia_semana}</td>
+                        <td>${h.hora_inicio.substring(0,5)} - ${h.hora_fin.substring(0,5)}</td>
+                        <td>
+                            <button class="btn-delete" onclick="eliminarHorario(${h.id})">Eliminar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(fila);
+                });
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="5" class="no-data" style="color:red;">Error al conectar con el servidor.</td></tr>';
+                console.error('Error:', error);
+            }
+        }
+
+        // Función para eliminar un horario (DELETE)
+        async function eliminarHorario(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar este horario?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}?id=${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    cargarHorarios(); // Recargar la tabla
+                } else {
+                    alert('No se pudo eliminar el registro');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
 </body>
 </html>
